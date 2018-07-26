@@ -38,10 +38,10 @@ public class Main {
             //Empty DB table before inserting new rows
             //todo: Look at adding natural keys
             PreparedStatement drop_table = conn.prepareStatement("TRUNCATE TABLE stock_quotes");
-            System.out.println("Flushing Table");
+            //System.out.println("Flushing Table");
 
             drop_table.execute();
-            System.out.println("Success!");
+            //System.out.println("Success!");
         }catch( IOException io_e) {
             System.err.println("Issue Retrieving Data from URL!");
             db.close();
@@ -73,6 +73,7 @@ public class Main {
 
 
         //Notify user of how to ask for data
+        System.out.println("-------------------------------------------------------------------------------------");
         System.out.println("To use this tool you will provide a Stock symbol (4 letters) and a date to check.");
         System.out.println("You will be able to see either a daily or monthly summary of the data.");
 
@@ -83,17 +84,20 @@ public class Main {
             //Ask for stock symbol
             //todo: verify that user input is within tickers from table
 
-            String ticker_in = InputHelper.getInput("Please provide a 4 letter stock ticker").toUpperCase();
+            String ticker_in = InputHelper.getInput("Please provide a 4 letter stock ticker symbol: (eg. 'AAPL')").toUpperCase();
 
             if( ticker_in.length() != 4){
-                System.err.println("Not 4 letters, try again");
+                System.err.println("Not 4 letters, try again!");
                 continue;
             }
 
 
             //Ask for monthly vs daily summary
             //todo: add prepared statement for monthly
-            int summary_option = InputHelper.getIntegerInput("Would you like a daily or monthly summary?  1 for daily, 2 for monthly");
+            System.out.println("Would you like a daily or a monthly summary of your stock?");
+            System.out.println("1) Daily Summary");
+            System.out.println("2) Monthly Summary");
+            int summary_option = InputHelper.getIntegerInput("");
 
             if( (summary_option < 1) || (summary_option > 2)){
                 System.err.println("You didn't enter 1 or 2, try again");
@@ -148,9 +152,10 @@ public class Main {
 
             //Ask the user if they would like to check on another stock!
             String answer = InputHelper.getInput("Would you like to check on another stock (Y/N)?");
-            if( answer.toUpperCase() != "Y"){
+            if(! answer.toUpperCase().equals("Y")){
                 break;
-            }else{
+            }
+            else{
                 continue;
             }
         }

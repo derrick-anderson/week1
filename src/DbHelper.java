@@ -52,7 +52,7 @@ public class DbHelper
     {
         if (conn == null) {
             if (openConnection()) {
-                System.out.println("Connection opened");
+                //System.out.println("Connection opened");
                 return conn;
             } else {
                 return null;
@@ -64,7 +64,7 @@ public class DbHelper
 
     //Close connection
     public void close() {
-        System.out.println("Closing connection");
+        //System.out.println("Closing connection");
         try {
             conn.close();
             conn = null;
