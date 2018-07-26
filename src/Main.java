@@ -148,7 +148,7 @@ public class Main {
             }
             rs.close();
             //Call the summary object summarize
-            summaryBean.summary();
+            summaryBean.summary(summary_option);
 
             //Ask the user if they would like to check on another stock!
             String answer = InputHelper.getInput("Would you like to check on another stock (Y/N)?");

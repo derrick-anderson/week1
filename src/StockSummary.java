@@ -62,12 +62,21 @@ public class StockSummary {
     }
 
     //todo: Add a new Summary format to this
-    public void summary(){
-        System.out.println("Stock : " + this.ticker);
+    public void summary(int option){
+        /*System.out.println("Stock : " + this.ticker);
         System.out.println("Volume : " + this.volume);
         System.out.println("Opening Price : " + this.open_price);
         System.out.println("Low Price : " + this.low_price);
         System.out.println("High Price : " + this.high_price);
         System.out.println("Closing Price : " + this.closing_price);
+        System.out.println("TESTING");*/
+        if(option == 1){
+            System.out.println("Daily Summary for Stock : " + this.ticker);
+        }else if(option ==2) {
+            System.out.println("Monthly Summary for Stock : " + this.ticker);
+        }
+        System.out.println(String.format("%60s", "").replace(" ", "-"));
+        System.out.println(String.format("|%-10s|%-15s|%-10s|%-10s|%-15s|", "Volume", "Opening Price", "Low Price", "High Price", "Closing Price"));
+        System.out.println(String.format("|%,-10d|%,-15.2f|%,-10.2f|%,-10.2f|%,-15.2f|", this.volume, this.open_price, this.low_price, this.high_price, this.closing_price));
     }
 }
