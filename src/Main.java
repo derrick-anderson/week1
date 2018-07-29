@@ -28,6 +28,7 @@ public class Main {
         DbHelper db = DbHelper.getInstance();
         Connection conn = db.getConnection();
         List<StockQuote> stock_list = null;
+
         //Create an object mapper and use it to spit the Json into a list.
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -42,11 +43,13 @@ public class Main {
 
             drop_table.execute();
             //System.out.println("Success!");
-        }catch( IOException io_e) {
+        }
+        catch( IOException io_e) {
             System.err.println("Issue Retrieving Data from URL!");
             db.close();
             exit();
-        }catch(Exception e){
+        }
+        catch(Exception e){
             System.err.println("Issue with Database Flush!");
             db.close();
             exit();
@@ -67,7 +70,8 @@ public class Main {
                 sql.execute();
             }
         System.out.println("Success importing Stock Data to DB!");
-        }catch(SQLException e){
+        }
+        catch(SQLException e){
             System.err.println("Issue Writing Quotes to DB!");
         }
 
@@ -138,6 +142,8 @@ public class Main {
 
             //Assign values to summary object
             StockSummary summaryBean = new StockSummary();
+
+
             while(rs.next()) { // Advance to the 1 record
                 summaryBean.setTicker(rs.getString("symbol"));
                 summaryBean.setVolume(rs.getInt("trade_volume"));
@@ -146,7 +152,9 @@ public class Main {
                 summaryBean.setHigh_price(rs.getBigDecimal("max_price"));
                 summaryBean.setClosing_price(rs.getBigDecimal("closing_price"));
             }
+
             rs.close();
+
             //Call the summary object summarize
             summaryBean.summary(summary_option);
 
