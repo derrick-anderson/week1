@@ -62,6 +62,16 @@ public class DbHelper
     }
 
 
+    //todo: Add a method for the flush of the table
+
+    //todo: Add a method for the query for the stocks
+
+    //todo: Add a method to return a list of the Symbols in the table
+
+    //todo: Add a method to return the earliest date in the table
+
+    //todo: Add a method to return the latest date in the table 
+
     //Close connection
     public void close() {
         //System.out.println("Closing connection");
