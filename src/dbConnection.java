@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DbHelper
+public class dbConnection
 {
 
     //Create a singleton
@@ -15,6 +15,7 @@ public class DbHelper
     private static final String USERNAME = "week1";
     private static final String PASSWORD = "Week1@Solstic3";
     private static final String CONN_STRING = "jdbc:mysql://localhost/week1";
+    private static String truncate_sql = "TRUNCATE TABLE stock_quotes";
 
 
     // Singleton Connection Constructor
@@ -43,6 +44,17 @@ public class DbHelper
     }
 
     //todo: Add a method for the flush of the table
+    //Method for truncating table before additions
+    public static void truncate_table(){
+        conn = getConnection();
+        try{
+            conn.prepareStatement(truncate_sql).execute();
+        }
+        catch(SQLException e){
+            printSqlError(e);
+        }
+
+    }
 
     //todo: Add a method for the batch insert to the table.
 
@@ -63,9 +75,14 @@ public class DbHelper
             conn = null;
         }
         catch (SQLException e) {
-            System.err.println("Error Code : " + e.getErrorCode());
-            System.err.println("SQL State : " + e.getSQLState());
-            System.err.println("Message : " + e.getNextException());
+            printSqlError(e);
         }
+    }
+
+    // Sql Error handling
+    private static void printSqlError(SQLException e){
+        System.err.println("Error Code : " + e.getErrorCode());
+        System.err.println("SQL State : " + e.getSQLState());
+        System.err.println("Message : " + e.getNextException());
     }
 }

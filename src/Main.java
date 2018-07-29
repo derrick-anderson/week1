@@ -1,7 +1,5 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import jdk.internal.util.xml.impl.Input;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,7 +23,7 @@ public class Main {
 
 
         //Open a db Connection
-        Connection conn = DbHelper.getConnection();
+        Connection conn = dbConnection.getConnection();
         List<StockQuote> stock_list = null;
 
         //Create an object mapper and use it to spit the Json into a list.
@@ -36,21 +34,17 @@ public class Main {
             System.out.println("Successfully retreived " + stock_list.size() + " quotes from URL");
 
             //Empty DB table before inserting new rows
-            //todo: Look at adding natural keys
-            PreparedStatement drop_table = conn.prepareStatement("TRUNCATE TABLE stock_quotes");
-            //System.out.println("Flushing Table");
+            dbConnection.truncate_table();
 
-            drop_table.execute();
-            //System.out.println("Success!");
         }
         catch( IOException io_e) {
             System.err.println("Issue Retrieving Data from URL!");
-            DbHelper.close();
+            dbConnection.close();
             exit();
         }
         catch(Exception e){
             System.err.println("Issue with Database Flush!");
-            DbHelper.close();
+            dbConnection.close();
             exit();
         }
 
@@ -166,7 +160,7 @@ public class Main {
                 continue;
             }
         }
-        DbHelper.close();
+        dbConnection.close();
 
     }
 }
