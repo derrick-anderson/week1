@@ -24,6 +24,7 @@ public class Main {
 
         //Open a db Connection
         Connection conn = dbConnection.getConnection();
+
         List<StockQuote> stock_list = null;
 
         //Create an object mapper and use it to spit the Json into a list.
@@ -37,7 +38,7 @@ public class Main {
             dbConnection.truncate_table();
 
         }
-        catch( IOException io_e) {
+        catch(IOException io_e) {
             System.err.println("Issue Retrieving Data from URL!");
             dbConnection.close();
             exit();
