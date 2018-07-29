@@ -43,7 +43,7 @@ public class dbConnection
         return conn;
     }
 
-    //todo: Add a method for the flush of the table
+
     //Method for truncating table before additions
     public static void truncate_table(){
         conn = getConnection();
