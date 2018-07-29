@@ -61,9 +61,10 @@ public class Main {
                 sql.setString(2, bean.getSymbol());
                 sql.setBigDecimal(3, bean.getPrice());
                 sql.setInt(4, bean.getVolume());
-                sql.execute();
+                sql.addBatch();
             }
-        System.out.println("Success importing Stock Data to DB!");
+            sql.executeBatch();
+            System.out.println("Success importing Stock Data to DB!");
         }
         catch(SQLException e){
             System.err.println("Issue Writing Quotes to DB!");
