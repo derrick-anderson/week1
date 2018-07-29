@@ -25,8 +25,7 @@ public class Main {
 
 
         //Open a db Connection
-        DbHelper db = DbHelper.getInstance();
-        Connection conn = db.getConnection();
+        Connection conn = DbHelper.getConnection();
         List<StockQuote> stock_list = null;
 
         //Create an object mapper and use it to spit the Json into a list.
@@ -46,12 +45,12 @@ public class Main {
         }
         catch( IOException io_e) {
             System.err.println("Issue Retrieving Data from URL!");
-            db.close();
+            DbHelper.close();
             exit();
         }
         catch(Exception e){
             System.err.println("Issue with Database Flush!");
-            db.close();
+            DbHelper.close();
             exit();
         }
 
@@ -167,7 +166,7 @@ public class Main {
                 continue;
             }
         }
-        db.close();
+        DbHelper.close();
 
     }
 }

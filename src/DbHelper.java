@@ -1,3 +1,5 @@
+import sun.jvm.hotspot.asm.sparc.SPARCArgument;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -6,63 +8,43 @@ public class DbHelper
 {
 
     //Create a singleton
-    private static DbHelper instance = null;
-    private Connection conn = null;
+    private static Connection conn = null;
 
 
     //Database Constants
-    private final String USERNAME = "week1";
-    private final String PASSWORD = "Week1@Solstic3";
-    private final String CONN_STRING =
-            "jdbc:mysql://localhost/week1";
+    private static final String USERNAME = "week1";
+    private static final String PASSWORD = "Week1@Solstic3";
+    private static final String CONN_STRING = "jdbc:mysql://localhost/week1";
 
 
-    //All singletons have a private connector
-    private DbHelper() {
-    }
-
-
-    //Return Singleton
-    public static DbHelper getInstance() {
-        if (instance == null) {
-            instance = new DbHelper();
-        }
-        return instance;
-    }
-
-
-    //Open a db connection
-    private boolean openConnection()
+    // Singleton Connection Constructor
+    private static Connection dbConnection()
     {
-        try {
+        try{
             conn = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
-            return true;
-
         }
-        catch (SQLException e) {
-            System.err.println(e);
-            return false;
+        catch(SQLException e){
+            System.err.println(e.getNextException());
         }
-
+        finally{
+            return conn;
+        }
     }
 
 
-    //Return connection
-    public Connection getConnection()
+    // Public Access Method
+    public static Connection getConnection()
     {
         if (conn == null) {
-            if (openConnection()) {
-                //System.out.println("Connection opened");
-                return conn;
-            } else {
-                return null;
-            }
+            conn = dbConnection();
+            return conn;
         }
         return conn;
     }
 
-
     //todo: Add a method for the flush of the table
+
+    //todo: Add a method for the batch insert to the table.
 
     //todo: Add a method for the query for the stocks
 
@@ -70,16 +52,20 @@ public class DbHelper
 
     //todo: Add a method to return the earliest date in the table
 
-    //todo: Add a method to return the latest date in the table 
+    //todo: Add a method to return the latest date in the table
 
-    //Close connection
-    public void close() {
-        //System.out.println("Closing connection");
+
+    // Close connection method called at the end of main
+    public static void close() {
+
         try {
             conn.close();
             conn = null;
-        } catch (Exception e) {
-            System.err.println(e);
+        }
+        catch (SQLException e) {
+            System.err.println("Error Code : " + e.getErrorCode());
+            System.err.println("SQL State : " + e.getSQLState());
+            System.err.println("Message : " + e.getNextException());
         }
     }
 }
