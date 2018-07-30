@@ -35,7 +35,7 @@ public class Main {
             System.out.println("Successfully retreived " + stock_list.size() + " quotes from URL");
 
             //Empty DB table before inserting new rows
-            dbConnection.truncate_table();
+            dbConnection.truncateTable();
 
         }
         catch(IOException io_e) {
@@ -50,25 +50,9 @@ public class Main {
         }
 
 
-        //Loop over the beans and prepare a new statement
-        try(
-                PreparedStatement sql = conn.prepareStatement("INSERT INTO stock_quotes (date, symbol, price, volume) VALUES (?,?,?,?)");
-            )
-        {
-            for( StockQuote bean: stock_list ){
-                //Use the Beans created to store the values in the DB
-                sql.setTimestamp(1, bean.getDate());
-                sql.setString(2, bean.getSymbol());
-                sql.setBigDecimal(3, bean.getPrice());
-                sql.setInt(4, bean.getVolume());
-                sql.addBatch();
-            }
-            sql.executeBatch();
-            System.out.println("Success importing Stock Data to DB!");
-        }
-        catch(SQLException e){
-            System.err.println("Issue Writing Quotes to DB!");
-        }
+        //todo: update this after the stock list comes from separate class.
+        // Call the insertion function and pass the stock list
+        dbConnection.insertToTable(stock_list);
 
 
         //Notify user of how to ask for data

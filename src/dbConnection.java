@@ -1,8 +1,8 @@
-import sun.jvm.hotspot.asm.sparc.SPARCArgument;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class dbConnection
 {
@@ -15,7 +15,8 @@ public class dbConnection
     private static final String USERNAME = "week1";
     private static final String PASSWORD = "Week1@Solstic3";
     private static final String CONN_STRING = "jdbc:mysql://localhost/week1";
-    private static String truncate_sql = "TRUNCATE TABLE stock_quotes";
+    private static String truncateSql = "TRUNCATE TABLE stock_quotes";
+    private static String insertSql = "INSERT INTO stock_quotes (date, symbol, price, volume) VALUES (?,?,?,?)";
 
 
     // Singleton Connection Constructor
@@ -45,10 +46,10 @@ public class dbConnection
 
 
     //Method for truncating table before additions
-    public static void truncate_table(){
+    public static void truncateTable(){
         conn = getConnection();
         try{
-            conn.prepareStatement(truncate_sql).execute();
+            conn.prepareStatement(truncateSql).execute();
         }
         catch(SQLException e){
             printSqlError(e);
@@ -57,6 +58,28 @@ public class dbConnection
     }
 
     //todo: Add a method for the batch insert to the table.
+    // Method to do bulk insert to table.
+    public static void insertToTable(List<StockQuote> list_quotes){
+        conn = getConnection();
+        try{
+            PreparedStatement insertStatement  = conn.prepareStatement(insertSql);
+            for( StockQuote bean :list_quotes ){
+
+                // Assign values from beans to the batch statement
+                insertStatement.setTimestamp(1, bean.getDate());
+                insertStatement.setString(2, bean.getSymbol());
+                insertStatement.setBigDecimal(3, bean.getPrice());
+                insertStatement.setInt(4, bean.getVolume());
+                insertStatement.addBatch();
+            }
+            insertStatement.executeBatch();
+            System.out.println("Success importing Stock Data to DB!");
+        }
+        catch(SQLException e){
+            printSqlError(e);
+            System.err.println("Issue Writing Quotes to DB!");
+        }
+    }
 
     //todo: Add a method for the query for the stocks
 
