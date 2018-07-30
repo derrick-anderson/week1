@@ -85,7 +85,7 @@ public class dbConnection
         }
     }
 
-    //todo: Add a method for the query for the summary
+
     // Method that queries table for summary and returns summary bean.
     public static StockSummary getSummary(String ticker, String date, String dateFormat){
 
